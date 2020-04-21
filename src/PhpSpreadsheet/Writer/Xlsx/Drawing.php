@@ -163,7 +163,7 @@ class Drawing extends WriterPart
     {
         if ($pRelationId >= 0) {
             // xdr:oneCellAnchor
-            $objWriter->startElement('xdr:oneCellAnchor');
+            $objWriter->startElement('xdr:twoCellAnchor');
             // Image location
             $aCoordinates = Coordinate::coordinateFromString($pDrawing->getCoordinates());
             $aCoordinates[0] = Coordinate::columnIndexFromString($aCoordinates[0]);
@@ -176,10 +176,18 @@ class Drawing extends WriterPart
             $objWriter->writeElement('xdr:rowOff', \PhpOffice\PhpSpreadsheet\Shared\Drawing::pixelsToEMU($pDrawing->getOffsetY()));
             $objWriter->endElement();
 
-            // xdr:ext
-            $objWriter->startElement('xdr:ext');
-            $objWriter->writeAttribute('cx', \PhpOffice\PhpSpreadsheet\Shared\Drawing::pixelsToEMU($pDrawing->getWidth()));
-            $objWriter->writeAttribute('cy', \PhpOffice\PhpSpreadsheet\Shared\Drawing::pixelsToEMU($pDrawing->getHeight()));
+//            // xdr:ext
+//            $objWriter->startElement('xdr:ext');
+//            $objWriter->writeAttribute('cx', \PhpOffice\PhpSpreadsheet\Shared\Drawing::pixelsToEMU($pDrawing->getWidth()));
+//            $objWriter->writeAttribute('cy', \PhpOffice\PhpSpreadsheet\Shared\Drawing::pixelsToEMU($pDrawing->getHeight()));
+//            $objWriter->endElement();
+    
+            // xdr:to
+            $objWriter->startElement('xdr:to');
+            $objWriter->writeElement('xdr:col', $aCoordinates[0] - 1);
+            $objWriter->writeElement('xdr:colOff', \PhpOffice\PhpSpreadsheet\Shared\Drawing::pixelsToEMU($pDrawing->getWidth()));
+            $objWriter->writeElement('xdr:row', $aCoordinates[1]);
+            $objWriter->writeElement('xdr:rowOff', "0");
             $objWriter->endElement();
 
             // xdr:pic
@@ -190,14 +198,19 @@ class Drawing extends WriterPart
 
             // xdr:cNvPr
             $objWriter->startElement('xdr:cNvPr');
-            $objWriter->writeAttribute('id', $pRelationId);
-            $objWriter->writeAttribute('name', $pDrawing->getName());
+            $objWriter->writeAttribute('name', $pDrawing->getName() . $pRelationId);
             $objWriter->writeAttribute('descr', $pDrawing->getDescription());
+            $objWriter->writeAttribute('id', $pRelationId + 1);
 
             //a:hlinkClick
             $this->writeHyperLinkDrawing($objWriter, $hlinkClickId);
-
+    
+            $objWriter->startElement('a:extLst');
+            $objWriter->startElement('a:ext');
+            $objWriter->writeAttribute('uri', "{FF2B5EF4-FFF2-40B4-BE49-F238E27FC236}");
             $objWriter->endElement();
+            $objWriter->endElement();
+            $objWriter->endElement(); // close xdr:cNvPr
 
             // xdr:cNvPicPr
             $objWriter->startElement('xdr:cNvPicPr');
