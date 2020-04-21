@@ -167,6 +167,9 @@ class Drawing extends WriterPart
             // Image location
             $aCoordinates = Coordinate::coordinateFromString($pDrawing->getCoordinates());
             $aCoordinates[0] = Coordinate::columnIndexFromString($aCoordinates[0]);
+    
+            $aToCoordinates = Coordinate::coordinateFromString($pDrawing->getCoordinates());
+            $aToCoordinates[0] = Coordinate::columnIndexFromString($aCoordinates[0]);
 
             // xdr:from
             $objWriter->startElement('xdr:from');
@@ -184,9 +187,9 @@ class Drawing extends WriterPart
     
             // xdr:to
             $objWriter->startElement('xdr:to');
-            $objWriter->writeElement('xdr:col', $aCoordinates[0] - 1);
+            $objWriter->writeElement('xdr:col', $aToCoordinates[0] - 1);
             $objWriter->writeElement('xdr:colOff', \PhpOffice\PhpSpreadsheet\Shared\Drawing::pixelsToEMU($pDrawing->getWidth()));
-            $objWriter->writeElement('xdr:row', $aCoordinates[1]);
+            $objWriter->writeElement('xdr:row', $aToCoordinates[1] - 1);
             $objWriter->writeElement('xdr:rowOff', "0");
             $objWriter->endElement();
 

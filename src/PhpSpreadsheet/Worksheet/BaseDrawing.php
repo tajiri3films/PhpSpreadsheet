@@ -49,6 +49,13 @@ class BaseDrawing implements IComparable
      * @var string
      */
     protected $coordinates;
+    
+    /**
+     * To Coordinates.
+     *
+     * @var string
+     */
+    protected $toCoordinates;
 
     /**
      * Offset X.
@@ -116,6 +123,7 @@ class BaseDrawing implements IComparable
         $this->description = '';
         $this->worksheet = null;
         $this->coordinates = 'A1';
+        $this->toCoordinates = 'A1';
         $this->offsetX = 0;
         $this->offsetY = 0;
         $this->width = 0;
@@ -259,6 +267,20 @@ class BaseDrawing implements IComparable
     {
         $this->coordinates = $pValue;
 
+        return $this;
+    }
+    
+    /**
+     * Set To Coordinates.
+     *
+     * @param string $pValue eg: 'A1'
+     *
+     * @return $this
+     */
+    public function setToCoordinates($pValue)
+    {
+        $this->toCoordinates = $pValue;
+        
         return $this;
     }
 
