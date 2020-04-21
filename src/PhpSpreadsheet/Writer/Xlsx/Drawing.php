@@ -168,7 +168,7 @@ class Drawing extends WriterPart
             $aCoordinates = Coordinate::coordinateFromString($pDrawing->getCoordinates());
             $aCoordinates[0] = Coordinate::columnIndexFromString($aCoordinates[0]);
     
-            $aToCoordinates = Coordinate::coordinateFromString($pDrawing->getCoordinates());
+            $aToCoordinates = Coordinate::coordinateFromString($pDrawing->getToCoordinates());
             $aToCoordinates[0] = Coordinate::columnIndexFromString($aToCoordinates[0]);
 
             // xdr:from

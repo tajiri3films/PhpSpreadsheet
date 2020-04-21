@@ -255,6 +255,16 @@ class BaseDrawing implements IComparable
     {
         return $this->coordinates;
     }
+    
+    /**
+     * Get To Coordinates.
+     *
+     * @return string
+     */
+    public function getToCoordinates()
+    {
+        return $this->toCoordinates;
+    }
 
     /**
      * Set Coordinates.
