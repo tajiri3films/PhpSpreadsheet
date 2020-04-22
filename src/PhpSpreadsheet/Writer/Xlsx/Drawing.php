@@ -175,14 +175,14 @@ class Drawing extends WriterPart
             // X: from ~ to
             // getColumnIterator($start, $end)
             $colWidth = 0;
-            for ($i = $aCoordinates[0]; $i < $aCoordinates[1]; $i++) {
+            for ($i = $aCoordinates[0]; $i < $aToCoordinates[0]; $i++) {
                 $colWidth += $pWorksheet->getColumnDimensionByColumn($i)->getWidth();
             }
             $colToOff =
                 \PhpOffice\PhpSpreadsheet\Shared\Drawing::pixelsToEMU($pDrawing->getOffsetX()) + \PhpOffice\PhpSpreadsheet\Shared\Drawing::pixelsToEMU($pDrawing->getWidth())
                 - \PhpOffice\PhpSpreadsheet\Shared\Drawing::pixelsToEMU($colWidth);
             $rowHeight = 0;
-            for ($j = $aToCoordinates[0]; $j < $aToCoordinates[1]; $j++) {
+            for ($j = $aCoordinates[1]; $j < $aToCoordinates[1]; $j++) {
                 $rowHeight = $pWorksheet->getRowDimension($j)->getRowHeight();
             }
             $rowToOff =
