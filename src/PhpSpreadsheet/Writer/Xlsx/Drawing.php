@@ -175,16 +175,20 @@ class Drawing extends WriterPart
             // X: from ~ to
             // getColumnIterator($start, $end)
             $colWidth = 0;
-            for ($i = $aCoordinates[0]; $i < $aToCoordinates[0]; $i++) {
-                $colWidth += $pWorksheet->getColumnDimensionByColumn($i)->getWidth();
+            for ($i = $aCoordinates[0]; $i <= $aToCoordinates[0]; $i++) {
+                // @notice 1col width - 0.62 char
+                $colWidth += $pWorksheet->getColumnDimensionByColumn($i)->getWidth() - 0.62;
             }
+            // @notice static 1font = 8.5px
+            $colWidth = $colWidth * 8.5;
             $colToOff =
                 \PhpOffice\PhpSpreadsheet\Shared\Drawing::pixelsToEMU($pDrawing->getOffsetX()) + \PhpOffice\PhpSpreadsheet\Shared\Drawing::pixelsToEMU($pDrawing->getWidth())
                 - \PhpOffice\PhpSpreadsheet\Shared\Drawing::pixelsToEMU($colWidth);
             $rowHeight = 0;
-            for ($j = $aCoordinates[1]; $j < $aToCoordinates[1]; $j++) {
-                $rowHeight = $pWorksheet->getRowDimension($j)->getRowHeight();
+            for ($j = $aCoordinates[1]; $j <= $aToCoordinates[1]; $j++) {
+                $rowHeight += $pWorksheet->getRowDimension($j)->getRowHeight();
             }
+            $rowHeight = $rowHeight * 1.333333333;
             $rowToOff =
                 \PhpOffice\PhpSpreadsheet\Shared\Drawing::pixelsToEMU($pDrawing->getOffsetY()) + \PhpOffice\PhpSpreadsheet\Shared\Drawing::pixelsToEMU($pDrawing->getHeight())
                 - \PhpOffice\PhpSpreadsheet\Shared\Drawing::pixelsToEMU($rowHeight);
