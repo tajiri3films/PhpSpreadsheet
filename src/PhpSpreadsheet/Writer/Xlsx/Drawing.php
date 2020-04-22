@@ -173,7 +173,6 @@ class Drawing extends WriterPart
             $aToCoordinates[0] = Coordinate::columnIndexFromString($aToCoordinates[0]);
             
             // X: from ~ to
-            // getColumnIterator($start, $end)
             $colWidth = 0;
             for ($i = $aCoordinates[0]; $i <= $aToCoordinates[0]; $i++) {
                 // @notice 1col width - 0.62 char
@@ -200,12 +199,6 @@ class Drawing extends WriterPart
             $objWriter->writeElement('xdr:row', $aCoordinates[1] - 1);
             $objWriter->writeElement('xdr:rowOff', \PhpOffice\PhpSpreadsheet\Shared\Drawing::pixelsToEMU($pDrawing->getOffsetY()));
             $objWriter->endElement();
-
-//            // xdr:ext
-//            $objWriter->startElement('xdr:ext');
-//            $objWriter->writeAttribute('cx', \PhpOffice\PhpSpreadsheet\Shared\Drawing::pixelsToEMU($pDrawing->getWidth()));
-//            $objWriter->writeAttribute('cy', \PhpOffice\PhpSpreadsheet\Shared\Drawing::pixelsToEMU($pDrawing->getHeight()));
-//            $objWriter->endElement();
     
             // xdr:to
             $objWriter->startElement('xdr:to');
@@ -232,7 +225,7 @@ class Drawing extends WriterPart
     
             $objWriter->startElement('a:extLst');
             $objWriter->startElement('a:ext');
-            $objWriter->writeAttribute('uri', "{FF2B5EF4-FFF2-40B4-BE49-F238E27FC236}");
+            $objWriter->writeAttribute('uri', '{FF2B5EF4-FFF2-40B4-BE49-F238E27FC236}');
             $objWriter->endElement();
             $objWriter->endElement();
             $objWriter->endElement(); // close xdr:cNvPr
