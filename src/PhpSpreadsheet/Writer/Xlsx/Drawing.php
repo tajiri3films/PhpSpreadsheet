@@ -48,7 +48,7 @@ class Drawing extends WriterPart
             $pRelationId = $i;
             $hlinkClickId = $pDrawing->getHyperlink() === null ? null : ++$i;
 
-            $this->writeDrawing($objWriter, $pDrawing, $pRelationId, $hlinkClickId);
+            $this->writeDrawing($objWriter, $pWorksheet, $pDrawing, $pRelationId, $hlinkClickId);
 
             $iterator->next();
             ++$i;
@@ -153,13 +153,14 @@ class Drawing extends WriterPart
      * Write drawings to XML format.
      *
      * @param XMLWriter $objWriter XML Writer
+     * @param \PhpOffice\PhpSpreadsheet\Worksheet\Worksheet $pWorksheet
      * @param BaseDrawing $pDrawing
      * @param int $pRelationId
      * @param null|int $hlinkClickId
      *
      * @throws WriterException
      */
-    public function writeDrawing(XMLWriter $objWriter, BaseDrawing $pDrawing, $pRelationId = -1, $hlinkClickId = null)
+    public function writeDrawing(XMLWriter $objWriter, \PhpOffice\PhpSpreadsheet\Worksheet\Worksheet $pWorksheet, BaseDrawing $pDrawing, $pRelationId = -1, $hlinkClickId = null)
     {
         if ($pRelationId >= 0) {
             // xdr:oneCellAnchor
@@ -170,6 +171,23 @@ class Drawing extends WriterPart
     
             $aToCoordinates = Coordinate::coordinateFromString($pDrawing->getToCoordinates());
             $aToCoordinates[0] = Coordinate::columnIndexFromString($aToCoordinates[0]);
+            
+            // X: from ~ to
+            // getColumnIterator($start, $end)
+            $colWidth = 0;
+            for ($i = $aCoordinates[0]; $i < $aCoordinates[1]; $i++) {
+                $colWidth += $pWorksheet->getColumnDimensionByColumn($i)->getWidth();
+            }
+            $colToOff =
+                \PhpOffice\PhpSpreadsheet\Shared\Drawing::pixelsToEMU($pDrawing->getOffsetX()) + \PhpOffice\PhpSpreadsheet\Shared\Drawing::pixelsToEMU($pDrawing->getWidth())
+                - $colWidth;
+            $rowHeight = 0;
+            for ($j = $aToCoordinates[0]; $j < $aToCoordinates[1]; $j++) {
+                $rowHeight = $pWorksheet->getRowDimension($j)->getRowHeight();
+            }
+            $rowToOff =
+                \PhpOffice\PhpSpreadsheet\Shared\Drawing::pixelsToEMU($pDrawing->getOffsetY()) + \PhpOffice\PhpSpreadsheet\Shared\Drawing::pixelsToEMU($pDrawing->getHeight())
+                - $rowHeight;
 
             // xdr:from
             $objWriter->startElement('xdr:from');
@@ -188,9 +206,9 @@ class Drawing extends WriterPart
             // xdr:to
             $objWriter->startElement('xdr:to');
             $objWriter->writeElement('xdr:col', $aToCoordinates[0] - 1);
-            $objWriter->writeElement('xdr:colOff', \PhpOffice\PhpSpreadsheet\Shared\Drawing::pixelsToEMU($pDrawing->getWidth()));
+            $objWriter->writeElement('xdr:colOff', $colToOff);
             $objWriter->writeElement('xdr:row', $aToCoordinates[1] - 1);
-            $objWriter->writeElement('xdr:rowOff', "0");
+            $objWriter->writeElement('xdr:rowOff', $rowToOff);
             $objWriter->endElement();
 
             // xdr:pic
