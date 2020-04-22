@@ -174,7 +174,7 @@ class Drawing extends WriterPart
             
             // X: from ~ to
             $colWidth = 0;
-            for ($i = $aCoordinates[0]; $i <= $aToCoordinates[0]; $i++) {
+            for ($i = $aCoordinates[0]; $i < $aToCoordinates[0]; $i++) {
                 // @notice 1col width - 0.62 char
                 $colWidth += $pWorksheet->getColumnDimensionByColumn($i)->getWidth() - 0.62;
             }
@@ -184,7 +184,7 @@ class Drawing extends WriterPart
                 \PhpOffice\PhpSpreadsheet\Shared\Drawing::pixelsToEMU($pDrawing->getOffsetX()) + \PhpOffice\PhpSpreadsheet\Shared\Drawing::pixelsToEMU($pDrawing->getWidth())
                 - \PhpOffice\PhpSpreadsheet\Shared\Drawing::pixelsToEMU($colWidth);
             $rowHeight = 0;
-            for ($j = $aCoordinates[1]; $j <= $aToCoordinates[1]; $j++) {
+            for ($j = $aCoordinates[1]; $j < $aToCoordinates[1]; $j++) {
                 $rowHeight += $pWorksheet->getRowDimension($j)->getRowHeight();
             }
             $rowHeight = $rowHeight * 1.333333333;
