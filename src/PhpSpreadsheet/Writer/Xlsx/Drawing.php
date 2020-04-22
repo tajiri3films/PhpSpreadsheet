@@ -180,14 +180,14 @@ class Drawing extends WriterPart
             }
             $colToOff =
                 \PhpOffice\PhpSpreadsheet\Shared\Drawing::pixelsToEMU($pDrawing->getOffsetX()) + \PhpOffice\PhpSpreadsheet\Shared\Drawing::pixelsToEMU($pDrawing->getWidth())
-                - $colWidth;
+                - \PhpOffice\PhpSpreadsheet\Shared\Drawing::pixelsToEMU($colWidth);
             $rowHeight = 0;
             for ($j = $aToCoordinates[0]; $j < $aToCoordinates[1]; $j++) {
                 $rowHeight = $pWorksheet->getRowDimension($j)->getRowHeight();
             }
             $rowToOff =
                 \PhpOffice\PhpSpreadsheet\Shared\Drawing::pixelsToEMU($pDrawing->getOffsetY()) + \PhpOffice\PhpSpreadsheet\Shared\Drawing::pixelsToEMU($pDrawing->getHeight())
-                - $rowHeight;
+                - \PhpOffice\PhpSpreadsheet\Shared\Drawing::pixelsToEMU($rowHeight);
 
             // xdr:from
             $objWriter->startElement('xdr:from');
